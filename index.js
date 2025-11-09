@@ -18,19 +18,18 @@ const app = express();
 app.use(express.json());
 connectDB();
 const corsOptions = {
+const corsOptions = {
   origin: (origin, callback) => {
-    if (origin === 'https://reporting-inc.vercel.app' || !origin) {
-      callback(null, true);  // Allow the request
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));  // Reject the request
+      callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
-app.use(cors(corsOptions));
-
 
 
 app.use('/api/auth', authRoute);
@@ -43,7 +42,8 @@ app.use('/api/incident', incidentRoutes);
 app.use('/api/agency', agencyRoutes);
 app.use('/api/branch', branchRouter);
 app.use('/api/incident-alerts', incidentAlertRouter);
-
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); /
 app.get('/', (req, res) => {
   res.status(200).json({ success: true });
 });
