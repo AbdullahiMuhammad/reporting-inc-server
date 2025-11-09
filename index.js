@@ -45,6 +45,9 @@ app.use('/api/incident', incidentRoutes);
 app.use('/api/agency', agencyRoutes);
 app.use('/api/branch', branchRouter);
 app.use('/api/incident-alerts', incidentAlertRouter);
+app.get('/', (req, res) => {
+  res.status(200).json({ success: true });
+});
 
 
 
