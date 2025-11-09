@@ -17,11 +17,20 @@ import agencyRoutes from "./routes/agencyRoutes.js";
 const app = express();
 connectDB();
 
-app.use(cors({
-  //origin: 'https://automatic-incident-reporting-ytdj.vercel.app',  // Allow your frontend origin
-  //credentials: true,  // Allow cookies (if you need them for auth)
-}));
-
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Check if the origin is allowed (e.g., from your frontend domain)
+    if (origin === 'reporting-inc.vercel.app' || !origin) {
+      callback(null, true);  // Allow the request
+    } else {
+      callback(new Error('Not allowed by CORS'));  // Reject the request
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
+  credentials: true,  // Allow cookies (if needed)
+};
+app.use(cors(corsOptions))
 
 
 app.use(express.json());
