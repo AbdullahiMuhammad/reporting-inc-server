@@ -19,18 +19,17 @@ app.use(express.json());
 connectDB();
 const corsOptions = {
   origin: (origin, callback) => {
-    // Check if the origin is allowed (e.g., from your frontend domain)
     if (origin === 'https://reporting-inc.vercel.app' || !origin) {
       callback(null, true);  // Allow the request
     } else {
       callback(new Error('Not allowed by CORS'));  // Reject the request
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
-  credentials: true,  // Allow cookies (if needed)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 };
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 
 
 
